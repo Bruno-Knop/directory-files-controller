@@ -1,0 +1,15 @@
+C:\wamp64\www\00.PESSOAL\TelegramBot\aws\managerFiles\bin\Debug\net6.0\managerFiles.exe
+C:\wamp64\www\00.PESSOAL\TelegramBot\aws\managerFiles\bin\Debug\net6.0\managerFiles.deps.json
+C:\wamp64\www\00.PESSOAL\TelegramBot\aws\managerFiles\bin\Debug\net6.0\managerFiles.runtimeconfig.json
+C:\wamp64\www\00.PESSOAL\TelegramBot\aws\managerFiles\bin\Debug\net6.0\managerFiles.dll
+C:\wamp64\www\00.PESSOAL\TelegramBot\aws\managerFiles\bin\Debug\net6.0\managerFiles.pdb
+C:\wamp64\www\00.PESSOAL\TelegramBot\aws\managerFiles\obj\Debug\net6.0\managerFiles.csproj.AssemblyReference.cache
+C:\wamp64\www\00.PESSOAL\TelegramBot\aws\managerFiles\obj\Debug\net6.0\managerFiles.GeneratedMSBuildEditorConfig.editorconfig
+C:\wamp64\www\00.PESSOAL\TelegramBot\aws\managerFiles\obj\Debug\net6.0\managerFiles.AssemblyInfoInputs.cache
+C:\wamp64\www\00.PESSOAL\TelegramBot\aws\managerFiles\obj\Debug\net6.0\managerFiles.AssemblyInfo.cs
+C:\wamp64\www\00.PESSOAL\TelegramBot\aws\managerFiles\obj\Debug\net6.0\managerFiles.csproj.CoreCompileInputs.cache
+C:\wamp64\www\00.PESSOAL\TelegramBot\aws\managerFiles\obj\Debug\net6.0\managerFiles.dll
+C:\wamp64\www\00.PESSOAL\TelegramBot\aws\managerFiles\obj\Debug\net6.0\refint\managerFiles.dll
+C:\wamp64\www\00.PESSOAL\TelegramBot\aws\managerFiles\obj\Debug\net6.0\managerFiles.pdb
+C:\wamp64\www\00.PESSOAL\TelegramBot\aws\managerFiles\obj\Debug\net6.0\managerFiles.genruntimeconfig.cache
+C:\wamp64\www\00.PESSOAL\TelegramBot\aws\managerFiles\obj\Debug\net6.0\ref\managerFiles.dll
