@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "RWnN3ddtrfhVh9G6ZwgOq5j3ZYhrTF2EcbF1KhjPFSiPt/SSype51sqJ/BTN6Kea7322/1OOcp9PZ1m0pydiHg==",
+  "dgSpecHash": "YbECVAX2zj2VOiiCo01sizVYb//Lob4oKyPYAEoZYRiI8WcsEdPtgx0xbG6+Pb9UlCLRuYtfzFkWiEvjWynFRA==",
   "success": true,
-  "projectFilePath": "C:\\wamp64\\www\\00.PESSOAL\\TelegramBot\\aws\\managerFiles\\managerFiles.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\wamp64\\www\\00.PESSOAL\\directory-files-controller\\managerFiles.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\bruno.novais\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
   "logs": []
 }

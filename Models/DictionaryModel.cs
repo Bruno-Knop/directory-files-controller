@@ -12,5 +12,6 @@ namespace managerFiles.Models
         public string Mandatory { get; } = "It is mandatory to inform an";
         public string DirectoryNotFound { get; } = "Directory informaded not Found!!";
         public string FileNotFound { get; } = "File informaded not Found!!";
+        public string PathInvalid { get; } = "Path informaded invalid!!";
     }
 }
