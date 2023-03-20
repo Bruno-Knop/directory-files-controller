@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 internal class Program
 {
@@ -34,6 +35,7 @@ internal class Program
             Console.WriteLine($"{dictionary.Margin}║   1 - Generate List.json                  ║");
             Console.WriteLine($"{dictionary.Margin}║   2 - Rename Files and Remove Character   ║");
             Console.WriteLine($"{dictionary.Margin}║   3 - Copy Files                          ║");
+            Console.WriteLine($"{dictionary.Margin}║   4 - Close                               ║");
             Console.WriteLine($"{dictionary.Margin}║                                           ║");
             Console.WriteLine($"{dictionary.Margin}╚═══════════════════════════════════════════╝");
             Console.ForegroundColor = ConsoleColor.White;
@@ -52,15 +54,17 @@ internal class Program
                     break;
                 case 1:
                     GenerateList();
+                    Console.Clear();
                     break;
                 case 2:
-                    Console.Clear();
                     RenameFilesAndRemoveCharacter();
-                    validList = false;
+                    Console.Clear();
                     break;
                 case 3:
-                    Console.Clear();
                     CopyFiles();
+                    Console.Clear();
+                    break;
+                case 4:
                     validList = false;
                     break;
                 default:
@@ -90,7 +94,7 @@ internal class Program
 
         //Wait information Origin
         if (!readTXT)
-            origin = ValidationPath("Origin", false, true);
+            origin = ValidationPath("Origin", true);
 
         //Wait information Type Separating
         bool copySeparatingId = ValidationBoolReadLine("Separating by Id (Y/N)", false);
@@ -110,6 +114,7 @@ internal class Program
         int index = 0;
         if (readTXT)
         {
+            origin = originTXT.Substring(0, originTXT.LastIndexOf("\\"));
             StreamReader reader = new(originTXT);
             string? line;
             while ((line = reader.ReadLine()) != null)
@@ -173,7 +178,13 @@ internal class Program
             }
         }
 
-        File.WriteAllText($"{origin}\\List.json", JsonConvert.SerializeObject(listModel));
+        string jsonList = JsonConvert.SerializeObject(listModel);
+        string pathJsonFile = Path.Combine(origin, "List.json");
+
+        if (File.Exists(pathJsonFile))
+            File.Delete(pathJsonFile);
+
+        File.WriteAllText(pathJsonFile, jsonList);
     }
     
     private static void RenameFilesAndRemoveCharacter()
@@ -181,7 +192,7 @@ internal class Program
         DictionaryModel dictionary = new();
 
         //Wait information Origin
-        string origin = ValidationPath("Origin", false, true);
+        string origin = ValidationPath("Origin", true);
 
         string characterRemove = ValidationStringReadLine("Remove Character", true);
         string characterReplace = ValidationStringReadLine("Replace Character", false);
@@ -209,10 +220,10 @@ internal class Program
         DictionaryModel dictionary = new();
 
         //Wait information Origin
-        string origin = ValidationPath("Origin", false, true);
+        string origin = ValidationPath("Origin", true);
 
         //Wait information Destination
-        string destination = ValidationPath("Destination", false, true);
+        string destination = ValidationPath("Destination", true);
 
         if (origin == destination)
         {
@@ -222,7 +233,7 @@ internal class Program
         }
 
         //Wait information List
-        string pathList = ValidationPath("PathList", true, false);
+        string pathList = ValidationPath("PathList", false, true);
 
 
 
@@ -236,7 +247,7 @@ internal class Program
 
             if (string.IsNullOrEmpty(pathList))
             {
-                //File.Copy($"{origin}/{fileName}", $"{destination}/{fileName}");
+                File.Copy($"{origin}\\{fileName}", $"{destination}\\{fileName}");
                 ConsoleSuccess($"{dictionary.Margin}Arquivo copiado com sucesso. {fileName}");
             }
             else
@@ -350,74 +361,88 @@ internal class Program
 
         return value;
     }
-    private static string ValidationPath(string msg, bool validationFile, bool mandatory)
+    private static string ValidationPath(string msg, bool mandatory, bool validationFile = false, string[]? filesTypeAccepted = null)
     {
         DictionaryModel dictionary = new();
         bool validationWhile = true;
-        string? path = string.Empty;
-        string msgNotFound = validationFile ? dictionary.FileNotFound : dictionary.DirectoryNotFound;
+        string path = string.Empty;
 
         while (validationWhile)
         {
             Console.Write($"{dictionary.Margin}Information {msg}:{dictionary.Margin}");
-            path = Console.ReadLine();
+            string? readLine = Console.ReadLine();
+            path = string.IsNullOrEmpty(readLine)? "" : readLine;
 
-            if (mandatory)
+            if (!validationFile)
+                path = FixPath(path);
+
+            
+            if (!string.IsNullOrEmpty(path))
             {
-                if (string.IsNullOrEmpty(path))
+                if (validationFile)
+                {
+                    if (ValidationFile(path, filesTypeAccepted))
+                        validationWhile = false;
+                }
+                else
+                {
+                    if (ValidationDirectory(path))
+                        validationWhile = false;
+                }
+            }
+            else
+            {
+                if (mandatory)
                 {
                     ConsoleWarning($"{dictionary.Margin}{dictionary.Mandatory} {msg}!!");
                     LineBreak();
                 }
                 else
-                {
-                    path = ValidationDirectory(path, validationFile, msgNotFound);
-                }
-
-                validationWhile = string.IsNullOrEmpty(path);
+                    validationWhile = false;
             }
-            else
-            {
-                if (!string.IsNullOrEmpty(path))
-                    path = ValidationDirectory(path, validationFile, msgNotFound);
-
-                validationWhile = false;
-            }
-
         }
 
-        return string.IsNullOrEmpty(path)? string.Empty : path;
+        return path;
     }
-    private static string ValidationDirectory(string path, bool validationFile, string msgNotFound)
+    private static bool ValidationDirectory(string path)
     {
         DictionaryModel dictionary = new();
-        string pathFile = string.Empty;
-        path = FixPath(path);
 
-        if (path.Contains(".json") || path.Contains(".txt"))
+        if (!Directory.Exists(path))
         {
-            if (validationFile)
-                pathFile = path.Substring(0, path.LastIndexOf("\\"));
-            else
-            {
-                ConsoleWarning($"{dictionary.Margin}{dictionary.PathInvalid}");
-                LineBreak();
-                return string.Empty;
-            }
-        }
-        else
-            pathFile = path;
-
-        if (!Directory.Exists(pathFile))
-        {
-            ConsoleWarning($"{dictionary.Margin}{msgNotFound}");
+            ConsoleWarning($"{dictionary.Margin}{dictionary.DirectoryNotFound}");
             LineBreak();
-            return string.Empty;
+            return false;
         }
 
         LineBreak();
 
-        return path;
+        return true;
+    }
+    private static bool ValidationFile(string pathFile, string[]? filesTypeAccepted)
+    {
+        DictionaryModel dictionary = new();
+
+        if(filesTypeAccepted != null)
+        {
+            foreach(var type in filesTypeAccepted)
+            {
+                if (pathFile.Contains(type.ToLower()) || pathFile.Contains(type.ToUpper()))
+                    return true;
+            }
+        }
+        else
+        {
+            if (File.Exists(pathFile))
+                return true;
+            else
+            {
+                ConsoleWarning($"{dictionary.Margin}{dictionary.FileNotFound}");
+                LineBreak();
+            }
+        }
+
+        return false;
     }
     private static string GetTypeFile(string path)
     {
@@ -474,6 +499,5 @@ internal class Program
     {
         Console.WriteLine("");
     }
-
     #endregion
 }
